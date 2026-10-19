@@ -1,0 +1,31 @@
+name: Build Windows App
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Generate Project and Build
+        run: |
+          flutter config --enable-windows-desktop
+          flutter create --platforms=windows my_app
+          Copy-Item -Path "lib\main.dart" -Destination "my_app\lib\main.dart" -Force
+          cd my_app
+          flutter build windows --release
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: QuadraticSolver_Windows
+          path: my_app/build/windows/x64/runner/Release/
