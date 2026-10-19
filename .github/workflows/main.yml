@@ -6,10 +6,15 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-2022
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Setup Visual Studio 2022 Toolset
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          toolset: '14.3'
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
