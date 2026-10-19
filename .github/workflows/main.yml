@@ -11,11 +11,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Visual Studio 2022 Toolset
-        uses: ilammy/msvc-dev-cmd@v1
-        with:
-          toolset: '14.3'
-
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -23,6 +18,10 @@ jobs:
 
       - name: Generate Project and Build
         run: |
+          # اجبار ابزارهای بیلد به انتخاب Visual Studio 2022
+          $env:VSINSTALLDIR = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\"
+          $env:CMAKE_GENERATOR = "Visual Studio 17 2022"
+          
           flutter config --enable-windows-desktop
           flutter create --platforms=windows my_app
           Copy-Item -Path "lib\main.dart" -Destination "my_app\lib\main.dart" -Force
